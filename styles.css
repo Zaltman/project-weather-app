@@ -1,0 +1,85 @@
+html,
+body {
+  background-color: azure;
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+  color: hsl(0, 0%, 50%);
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+input {
+  text-align: center;
+}
+.weatherCardsContainer {
+  /* position: relative;
+  top: 30%; */
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  font-size: larger;
+  margin: 35px;
+  text-align: center;
+  max-height: 100%;
+}
+
+.locSearchContainer {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-top: 25px;
+}
+.locSearchContainer > * {
+  margin: 5px;
+}
+.weatherCardsContainer div {
+  margin: 5px;
+}
+
+.geoName {
+  font-size: 50px;
+  padding-bottom: 20px;
+}
+
+#locInput {
+  height: 20px;
+  border: 0px;
+  border-radius: 5px;
+}
+#locSearchBtn {
+  background-color: transparent;
+  border-radius: 5px;
+  border: solid 0px aliceblue;
+  box-shadow: 3px 3px hsl(180, 50%, 87%);
+}
+
+.tempContainer {
+  display: flex;
+  align-items: center;
+}
+
+.rightSide {
+  font-size: x-large;
+}
+
+.rightSide > div {
+  padding: 5px;
+}
+
+.temp {
+  font-size: 100px;
+  border-right: solid 2px gray;
+  padding-right: 15px;
+  margin-right: 15px;
+}
+.tempContainer div {
+  margin: 0px 5px;
+}
