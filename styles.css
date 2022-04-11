@@ -15,19 +15,6 @@ body {
 input {
   text-align: center;
 }
-.weatherCardsContainer {
-  /* position: relative;
-  top: 30%; */
-  flex-grow: 1;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  font-size: larger;
-  margin: 35px;
-  text-align: center;
-  max-height: 100%;
-}
 
 .locSearchContainer {
   display: flex;
@@ -39,18 +26,10 @@ input {
 }
 .locSearchContainer > * {
   margin: 5px;
+  font-size: large;
 }
-.weatherCardsContainer div {
-  margin: 5px;
-}
-
-.geoName {
-  font-size: 50px;
-  padding-bottom: 20px;
-}
-
 #locInput {
-  height: 20px;
+  height: 30px;
   border: 0px;
   border-radius: 5px;
 }
@@ -59,6 +38,44 @@ input {
   border-radius: 5px;
   border: solid 0px aliceblue;
   box-shadow: 3px 3px hsl(180, 50%, 87%);
+  transition: color 0.3s ease-in-out, box-shadow 0.3s ease-in-out,
+    transform 0.3s ease-in-out;
+}
+#locSearchBtn:hover {
+  /* box-shadow: inset 100px 0 0 0 #54b3d6; */
+  /* color: white; */
+  box-shadow: 1px 1px hsl(180, 50%, 87%);
+}
+#locSearchBtn:active {
+  transform: translateY(3px);
+  box-shadow: 0px 0px hsl(180, 50%, 87%);
+}
+
+.weatherCardsContainer {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  font-size: larger;
+  margin: 35px;
+  text-align: center;
+  max-height: 100%;
+}
+
+.weatherCardsContainer div {
+  margin: 5px;
+}
+
+.geoNameContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.geoName {
+  font-size: 50px;
+  padding-bottom: 20px;
 }
 
 .tempContainer {
@@ -67,7 +84,7 @@ input {
 }
 
 .rightSide {
-  font-size: x-large;
+  font-size: xx-large;
 }
 
 .rightSide > div {
