@@ -44,7 +44,7 @@ input {
 #locSearchBtn:hover {
   /* box-shadow: inset 100px 0 0 0 #54b3d6; */
   /* color: white; */
-  box-shadow: 1px 1px hsl(180, 50%, 87%);
+  box-shadow: 2px 2px hsl(180, 50%, 87%);
 }
 #locSearchBtn:active {
   transform: translateY(3px);
@@ -59,6 +59,7 @@ input {
   align-items: center;
   font-size: larger;
   margin: 35px;
+  margin-top: 0px;
   text-align: center;
   max-height: 100%;
 }
@@ -71,11 +72,11 @@ input {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 0px;
 }
 
 .geoName {
   font-size: 50px;
-  padding-bottom: 20px;
 }
 
 .tempContainer {

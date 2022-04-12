@@ -1,3 +1,5 @@
+//show forecast and wind
+
 async function getGeoLoc(location) {
   if (!location) {
     city = 'Kretinga';
@@ -16,7 +18,7 @@ async function getGeoLoc(location) {
   return data;
 }
 
-async function getWeatherData(lat, lon) {
+async function getWeatherData(lat, lon, geoApiLocName) {
   let fetchStr =
     'https://api.openweathermap.org/data/2.5/weather?lat=' +
     lat +
@@ -27,12 +29,10 @@ async function getWeatherData(lat, lon) {
   let response = await fetch(fetchStr, {
     mode: 'cors',
   });
-  // http://openweathermap.org/img/wn/10d@2x.png
   data = await response.json();
   console.log(data);
-  console.log(data.weather[0].icon);
   domWeatherCard(
-    data.name,
+    geoApiLocName,
     data.weather[0].description,
     data.main.temp,
     data.main.feels_like,
@@ -46,12 +46,15 @@ async function getWeatherData(lat, lon) {
       ', temperature is ' +
       data.main.temp +
       ', feels like ' +
-      data.main.feels_like
+      data.main.feels_like +
+      ', wind is ' +
+      data.wind.speed +
+      ' m/s'
   );
 }
-async function mainProcess() {
-  let geoLoc = await getGeoLoc();
-  getWeatherData(geoLoc[0].lat, geoLoc[0].lon);
+async function mainProcess(locationStr) {
+  let geoLoc = await getGeoLoc(locationStr);
+  getWeatherData(geoLoc[0].lat, geoLoc[0].lon, geoLoc[0].name);
 }
 
 function domWeatherCard(geoNameText, descriptionText, tempText, feelsLikeText) {
@@ -59,7 +62,6 @@ function domWeatherCard(geoNameText, descriptionText, tempText, feelsLikeText) {
   if (document.querySelector('.weatherCard')) {
     document.querySelector('.weatherCard').remove();
   }
-  let locationInputBtn = document.querySelector('#locSearchBtn');
   let cardsContainer = document.querySelector('.weatherCardsContainer');
   let weatherCard = document.createElement('div');
   let geoNameContainer = document.createElement('div');
@@ -72,13 +74,6 @@ function domWeatherCard(geoNameText, descriptionText, tempText, feelsLikeText) {
   let temp = document.createElement('div');
   let feelsLikeTemp = document.createElement('div');
 
-  locationInputBtn.addEventListener('click', locationBtnClick);
-
-  function locationBtnClick() {
-    let inputValue = document.querySelector('#locInput').value;
-    console.log(inputValue);
-    mainProcess();
-  }
   weatherCard.classList.add('weatherCard');
   geoNameContainer.classList.add('geoNameContainer');
   geoName.classList.add('geoName');
@@ -107,8 +102,21 @@ function domWeatherCard(geoNameText, descriptionText, tempText, feelsLikeText) {
   rightSide.appendChild(description);
   rightSide.appendChild(feelsLikeTemp);
 }
+(function attachEventListeners() {
+  function getInputValueNClear() {
+    let inputValue = document.querySelector('#locInput').value;
+    document.querySelector('#locInput').value = '';
+    mainProcess(inputValue);
+  }
+  let locationInputBtn = document.querySelector('#locSearchBtn');
+  locationInputBtn.addEventListener('click', () => {
+    getInputValueNClear();
+  });
+  let locationInput = document.querySelector('#locInput');
+  locationInput.addEventListener('keydown', (e) => {
+    if (e.key == 'Enter') {
+      getInputValueNClear();
+    }
+  });
+})();
 mainProcess();
-
-// getWeatherData(55.8900579, 21.2424112);
-
-//key  c9d89fbef52f80c829fd4a44946773c3
