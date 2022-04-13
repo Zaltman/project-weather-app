@@ -1,5 +1,3 @@
-//show forecast and wind
-
 async function getGeoLoc(location) {
   if (!location) {
     city = 'Kretinga';
@@ -18,48 +16,18 @@ async function getGeoLoc(location) {
   return data;
 }
 
-async function getWeatherData(lat, lon, geoApiLocName) {
-  let fetchStr =
-    'https://api.openweathermap.org/data/2.5/weather?lat=' +
-    lat +
-    '&lon=' +
-    lon +
-    '&units=metric&appid=c9d89fbef52f80c829fd4a44946773c3';
-
-  let response = await fetch(fetchStr, {
-    mode: 'cors',
-  });
-  data = await response.json();
-  console.log(data);
-  domWeatherCard(
-    geoApiLocName,
-    data.weather[0].description,
-    data.main.temp,
-    data.main.feels_like,
-    data.weather[0].icon
-  );
-  console.log(
-    'Weather in ' +
-      data.name +
-      ', ' +
-      data.weather[0].description +
-      ', temperature is ' +
-      data.main.temp +
-      ', feels like ' +
-      data.main.feels_like +
-      ', wind is ' +
-      data.wind.speed +
-      ' m/s'
-  );
-}
 async function mainProcess(locationStr) {
   let geoLoc = await getGeoLoc(locationStr);
-  // getWeatherData(geoLoc[0].lat, geoLoc[0].lon, geoLoc[0].name);
-
   getWeatherForecastData(geoLoc[0].lat, geoLoc[0].lon, geoLoc[0].name);
 }
 
-function domWeatherCard(geoNameText, descriptionText, tempText, feelsLikeText) {
+function domCurrentWeatherCard(
+  geoNameText,
+  descriptionText,
+  tempText,
+  feelsLikeText,
+  windSpeedText
+) {
   //check if weather card already exists and delete it if so
   if (document.querySelector('.weatherCard')) {
     document.querySelector('.weatherCard').remove();
@@ -75,6 +43,7 @@ function domWeatherCard(geoNameText, descriptionText, tempText, feelsLikeText) {
   let weatherIcon = document.createElement('img');
   let temp = document.createElement('div');
   let feelsLikeTemp = document.createElement('div');
+  let windSpeed = document.createElement('div');
 
   weatherCard.classList.add('weatherCard');
   geoNameContainer.classList.add('geoNameContainer');
@@ -94,6 +63,7 @@ function domWeatherCard(geoNameText, descriptionText, tempText, feelsLikeText) {
   temp.textContent = tempText.toFixed(1) + '°';
   feelsLikeTemp.classList.add('feelsLike');
   feelsLikeTemp.textContent = 'Feels like ' + feelsLikeText.toFixed(1) + '°';
+  windSpeed.textContent = 'Wind: ' + windSpeedText.toFixed(0) + 'm/s';
 
   cardsContainer.appendChild(weatherCard);
   weatherCard.appendChild(geoNameContainer);
@@ -105,6 +75,7 @@ function domWeatherCard(geoNameText, descriptionText, tempText, feelsLikeText) {
   leftSide.appendChild(temp);
   rightSide.appendChild(description);
   rightSide.appendChild(feelsLikeTemp);
+  rightSide.appendChild(windSpeed);
 }
 (function attachEventListeners() {
   function getInputValueNClear() {
@@ -130,19 +101,20 @@ async function getWeatherForecastData(lat, lon, geoApiLocName) {
     lat +
     '&lon=' +
     lon +
+    '&exclude=minutely.hourly.daily.alerts' +
     '&units=metric&appid=c9d89fbef52f80c829fd4a44946773c3';
+  // '&exclude=minutely.hourly.daily.alerts' +
 
   let response = await fetch(fetchStr, {
     mode: 'cors',
   });
   data = await response.json();
-  console.log(data);
-  domWeatherCard(
+  domCurrentWeatherCard(
     geoApiLocName,
     data.current.weather[0].description,
     data.current.temp,
     data.current.feels_like,
-    data.current.weather[0].icon
+    data.current.wind_speed
   );
   console.log(
     'Weather in ' +
