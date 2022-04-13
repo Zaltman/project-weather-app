@@ -54,7 +54,9 @@ async function getWeatherData(lat, lon, geoApiLocName) {
 }
 async function mainProcess(locationStr) {
   let geoLoc = await getGeoLoc(locationStr);
-  getWeatherData(geoLoc[0].lat, geoLoc[0].lon, geoLoc[0].name);
+  // getWeatherData(geoLoc[0].lat, geoLoc[0].lon, geoLoc[0].name);
+
+  getWeatherForecastData(geoLoc[0].lat, geoLoc[0].lon, geoLoc[0].name);
 }
 
 function domWeatherCard(geoNameText, descriptionText, tempText, feelsLikeText) {
@@ -85,7 +87,9 @@ function domWeatherCard(geoNameText, descriptionText, tempText, feelsLikeText) {
   tempContainer.classList.add('tempContainer');
   rightSide.classList.add('rightSide');
   weatherIcon.src =
-    'http://openweathermap.org/img/wn/' + data.weather[0].icon + '@2x.png';
+    'http://openweathermap.org/img/wn/' +
+    data.current.weather[0].icon +
+    '@2x.png';
   temp.classList.add('temp');
   temp.textContent = tempText.toFixed(1) + '°';
   feelsLikeTemp.classList.add('feelsLike');
@@ -119,4 +123,40 @@ function domWeatherCard(geoNameText, descriptionText, tempText, feelsLikeText) {
     }
   });
 })();
+
+async function getWeatherForecastData(lat, lon, geoApiLocName) {
+  let fetchStr =
+    'https://api.openweathermap.org/data/2.5/onecall?lat=' +
+    lat +
+    '&lon=' +
+    lon +
+    '&units=metric&appid=c9d89fbef52f80c829fd4a44946773c3';
+
+  let response = await fetch(fetchStr, {
+    mode: 'cors',
+  });
+  data = await response.json();
+  console.log(data);
+  domWeatherCard(
+    geoApiLocName,
+    data.current.weather[0].description,
+    data.current.temp,
+    data.current.feels_like,
+    data.current.weather[0].icon
+  );
+  console.log(
+    'Weather in ' +
+      geoApiLocName +
+      ', ' +
+      data.current.weather[0].description +
+      ', temperature is ' +
+      data.current.temp +
+      ', feels like ' +
+      data.current.feels_like +
+      ', wind is ' +
+      data.current.wind_speed +
+      ' m/s'
+  );
+}
+
 mainProcess();
