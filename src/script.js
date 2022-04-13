@@ -1,4 +1,8 @@
+import './styles.css';
+// import { test } from './weatherApi';
+
 async function getGeoLoc(location) {
+  let city;
   if (!location) {
     city = 'Kretinga';
   } else {
@@ -12,7 +16,7 @@ async function getGeoLoc(location) {
   let response = await fetch(fetchStr, {
     mode: 'cors',
   });
-  data = await response.json();
+  let data = await response.json();
   return data;
 }
 
@@ -26,7 +30,8 @@ function domCurrentWeatherCard(
   descriptionText,
   tempText,
   feelsLikeText,
-  windSpeedText
+  windSpeedText,
+  weatherIconId
 ) {
   //check if weather card already exists and delete it if so
   if (document.querySelector('.weatherCard')) {
@@ -56,9 +61,7 @@ function domCurrentWeatherCard(
   tempContainer.classList.add('tempContainer');
   rightSide.classList.add('rightSide');
   weatherIcon.src =
-    'http://openweathermap.org/img/wn/' +
-    data.current.weather[0].icon +
-    '@2x.png';
+    'http://openweathermap.org/img/wn/' + weatherIconId + '@2x.png';
   temp.classList.add('temp');
   temp.textContent = tempText.toFixed(1) + '°';
   feelsLikeTemp.classList.add('feelsLike');
@@ -108,13 +111,14 @@ async function getWeatherForecastData(lat, lon, geoApiLocName) {
   let response = await fetch(fetchStr, {
     mode: 'cors',
   });
-  data = await response.json();
+  let data = await response.json();
   domCurrentWeatherCard(
     geoApiLocName,
     data.current.weather[0].description,
     data.current.temp,
     data.current.feels_like,
-    data.current.wind_speed
+    data.current.wind_speed,
+    data.current.weather[0].icon
   );
   console.log(
     'Weather in ' +
@@ -132,3 +136,4 @@ async function getWeatherForecastData(lat, lon, geoApiLocName) {
 }
 
 mainProcess();
+// test();
